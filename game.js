@@ -488,12 +488,16 @@ function spawnEnemies(force = false) {
     { row: 1, col: 24 },
   ];
 
-  while (state.enemyPool > 0 && state.enemies.length < MAX_ENEMIES) {
+  const maxAttempts = force ? spawnTiles.length * 6 : spawnTiles.length;
+  let attempts = 0;
+
+  while (state.enemyPool > 0 && state.enemies.length < MAX_ENEMIES && attempts < maxAttempts) {
     if (!force && state.enemySpawnTimer > 0) {
       return;
     }
 
-    const spawn = spawnTiles[Math.floor(Math.random() * spawnTiles.length)];
+    const spawn = spawnTiles[attempts % spawnTiles.length];
+    attempts += 1;
     const enemy = createTank(
       "enemy",
       spawn.col * TILE + 3,
