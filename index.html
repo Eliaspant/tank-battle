@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>坦克大战</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">HTML Tank Battle</p>
+      <h1>坦克大战</h1>
+      <p class="subtitle">击破敌军，守住基地。方向键移动，空格发射，R 重新开始。</p>
+    </section>
+
+    <section class="board-wrap">
+      <aside class="hud">
+        <div class="card">
+          <span class="label">生命</span>
+          <strong id="lives">3</strong>
+        </div>
+        <div class="card">
+          <span class="label">分数</span>
+          <strong id="score">0</strong>
+        </div>
+        <div class="card">
+          <span class="label">敌军</span>
+          <strong id="enemies">0</strong>
+        </div>
+        <div class="card hint">
+          <span class="label">操作</span>
+          <strong>Move / Fire</strong>
+          <p>Arrow Keys / Space</p>
+        </div>
+      </aside>
+
+      <div class="stage">
+        <canvas id="game" width="832" height="832" aria-label="坦克大战游戏画布"></canvas>
+        <div id="overlay" class="overlay hidden">
+          <div class="overlay-panel">
+            <h2 id="overlay-title">准备开始</h2>
+            <p id="overlay-text">消灭所有敌方坦克，别让它们摧毁你的基地。</p>
+            <button id="restart" type="button">开始 / 重新开始</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>
