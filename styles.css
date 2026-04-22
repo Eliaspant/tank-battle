@@ -1,14 +1,16 @@
 :root {
-  --bg: #121a12;
-  --panel: rgba(17, 30, 18, 0.82);
-  --panel-border: rgba(193, 255, 143, 0.2);
-  --grid: #23311f;
-  --text: #e7f5d7;
-  --muted: #9fba8f;
-  --accent: #c3ff8f;
-  --danger: #ff7a59;
-  --warning: #ffd166;
-  --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+  --bg: #101510;
+  --panel: rgba(16, 23, 20, 0.82);
+  --panel-border: rgba(240, 225, 170, 0.18);
+  --board-frame: rgba(255, 255, 255, 0.05);
+  --text: #edf4dd;
+  --muted: #b1be9a;
+  --accent: #f0e1aa;
+  --accent-strong: #f7ba6a;
+  --green: #c6ff89;
+  --blue: #8fd7ff;
+  --danger: #ff8c68;
+  --shadow: 0 28px 80px rgba(0, 0, 0, 0.4);
 }
 
 * {
@@ -18,11 +20,12 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Noto Sans SC", sans-serif;
   color: var(--text);
+  font-family: "Noto Sans SC", sans-serif;
   background:
-    radial-gradient(circle at top, rgba(124, 183, 77, 0.22), transparent 30%),
-    linear-gradient(180deg, #1a2617 0%, #10170f 50%, #090d09 100%);
+    radial-gradient(circle at 15% 15%, rgba(240, 225, 170, 0.14), transparent 24%),
+    radial-gradient(circle at 85% 0%, rgba(112, 174, 92, 0.18), transparent 26%),
+    linear-gradient(180deg, #1b221b 0%, #0c110c 100%);
 }
 
 body::before {
@@ -30,33 +33,34 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background-image:
+  background:
     linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 28px 28px;
-  opacity: 0.25;
+  background-size: 32px 32px;
+  opacity: 0.3;
 }
 
 .shell {
-  width: min(1180px, calc(100% - 32px));
+  width: min(1220px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 40px 0 48px;
+  padding: 36px 0 44px;
 }
 
 .hero {
-  margin-bottom: 28px;
+  margin-bottom: 22px;
 }
 
 .eyebrow,
 h1,
+.mode-button,
+#restart,
 .hud strong,
-.overlay h2,
-button {
+.overlay h2 {
   font-family: "Press Start 2P", monospace;
 }
 
 .eyebrow {
-  margin: 0 0 14px;
+  margin: 0 0 16px;
   color: var(--accent);
   font-size: 0.75rem;
   letter-spacing: 0.18em;
@@ -65,20 +69,55 @@ button {
 
 h1 {
   margin: 0;
-  font-size: clamp(2rem, 4vw, 3.6rem);
+  font-size: clamp(2rem, 4vw, 3.4rem);
   line-height: 1.1;
 }
 
 .subtitle {
-  max-width: 720px;
+  max-width: 760px;
   margin: 16px 0 0;
   color: var(--muted);
   font-size: 1rem;
+  line-height: 1.8;
+}
+
+.control-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.mode-button,
+#restart {
+  border: 1px solid rgba(240, 225, 170, 0.22);
+  border-radius: 999px;
+  padding: 14px 18px;
+  color: #131812;
+  background: linear-gradient(135deg, var(--accent), #fff3c6);
+  cursor: pointer;
+  transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease;
+}
+
+.mode-button:hover,
+#restart:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(240, 225, 170, 0.18);
+}
+
+.mode-button {
+  background: rgba(17, 24, 17, 0.92);
+  color: var(--muted);
+}
+
+.mode-button.active {
+  color: #131812;
+  background: linear-gradient(135deg, var(--accent-strong), #ffe6a5);
 }
 
 .board-wrap {
   display: grid;
-  grid-template-columns: 240px minmax(0, 1fr);
+  grid-template-columns: 300px minmax(0, 1fr);
   gap: 24px;
   align-items: start;
 }
@@ -90,11 +129,11 @@ h1 {
 
 .card {
   padding: 18px;
-  border: 1px solid var(--panel-border);
   border-radius: 18px;
+  border: 1px solid var(--panel-border);
   background: var(--panel);
-  backdrop-filter: blur(10px);
   box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
 }
 
 .label {
@@ -106,23 +145,34 @@ h1 {
 
 .hud strong {
   display: block;
-  font-size: 1.2rem;
-  line-height: 1.5;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
-.hint p {
-  margin: 12px 0 0;
+.hud p {
+  margin: 10px 0 0;
   color: var(--muted);
-  font-size: 0.9rem;
+  line-height: 1.6;
+  font-size: 0.92rem;
+}
+
+.player-card:first-of-type strong {
+  color: var(--green);
+}
+
+.player-card:nth-of-type(2) strong {
+  color: var(--blue);
 }
 
 .stage {
   position: relative;
   padding: 18px;
   border-radius: 28px;
-  background: rgba(6, 10, 6, 0.8);
+  border: 1px solid var(--board-frame);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent),
+    rgba(6, 10, 8, 0.85);
   box-shadow: var(--shadow);
-  border: 1px solid rgba(195, 255, 143, 0.12);
 }
 
 canvas {
@@ -130,9 +180,7 @@ canvas {
   width: 100%;
   height: auto;
   border-radius: 18px;
-  background:
-    linear-gradient(180deg, rgba(173, 220, 120, 0.08), transparent),
-    var(--grid);
+  background: #1a231a;
 }
 
 .overlay {
@@ -141,7 +189,7 @@ canvas {
   display: grid;
   place-items: center;
   border-radius: 18px;
-  background: rgba(4, 7, 5, 0.72);
+  background: rgba(5, 8, 6, 0.68);
 }
 
 .overlay.hidden {
@@ -149,42 +197,27 @@ canvas {
 }
 
 .overlay-panel {
-  width: min(100%, 420px);
-  padding: 28px;
+  width: min(100%, 440px);
+  padding: 30px;
   text-align: center;
   border-radius: 24px;
-  border: 1px solid rgba(195, 255, 143, 0.2);
-  background: rgba(12, 20, 12, 0.96);
+  border: 1px solid rgba(240, 225, 170, 0.16);
+  background: rgba(11, 16, 12, 0.96);
 }
 
 .overlay h2 {
-  margin: 0 0 16px;
-  font-size: 1.3rem;
-  line-height: 1.4;
+  margin: 0 0 14px;
+  font-size: 1.2rem;
+  line-height: 1.5;
 }
 
 .overlay p {
-  margin: 0 0 22px;
+  margin: 0;
   color: var(--muted);
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
-button {
-  border: 0;
-  padding: 14px 18px;
-  border-radius: 999px;
-  color: #0f170c;
-  background: linear-gradient(135deg, var(--accent), #f3ffb6);
-  cursor: pointer;
-  transition: transform 150ms ease, box-shadow 150ms ease;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(195, 255, 143, 0.3);
-}
-
-@media (max-width: 980px) {
+@media (max-width: 1080px) {
   .board-wrap {
     grid-template-columns: 1fr;
   }
@@ -194,10 +227,10 @@ button:hover {
   }
 }
 
-@media (max-width: 620px) {
+@media (max-width: 720px) {
   .shell {
     width: min(100% - 18px, 100%);
-    padding-top: 24px;
+    padding-top: 22px;
   }
 
   .hud {
